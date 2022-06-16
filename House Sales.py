@@ -29,7 +29,7 @@ df['bathrooms'].replace(np.nan,mean, inplace=True)
 
 # Question 3: Use the method value_counts to count the number of houses with unique floor values, use the method .to_frame() to convert it to a dataframe.
 
-housePlans = df.value_counts()
+housePlans = df['floors'].value_counts()
 housePlans.to_frame()
 
 # Question 4: Use the function boxplot in the seaborn library to determine whether houses with a waterfront view or without a waterfront view have more price outliers.
