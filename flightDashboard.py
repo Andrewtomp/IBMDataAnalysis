@@ -145,14 +145,6 @@ app.layout = html.Div(children=[
                 State("plot3", "children"), State("plot4", "children"),
                 State("plot5", "children")
                ])
-# Enter your code below. Make sure you have correct formatting.
-@app.callback( [ Input(component_id='input-type', component_property='value'),
-                Input(component_id='input-year', component_property='value')],
-               # REVIEW4: Holding output state till user enters all the form information. In this case, it will be chart type and year
-               [State("plot1", 'children'), State("plot2", "children"),
-                State("plot3", "children"), State("plot4", "children"),
-                State("plot5", "children")
-               ])
 # Add computation to callback function and return graph
 def get_graph(chart, year, children1, children2, c3, c4, c5):
       
