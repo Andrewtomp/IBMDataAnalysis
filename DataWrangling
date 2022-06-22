@@ -1,0 +1,38 @@
+# uses csv file imported into pandas dataframe and cleans data as prompted
+
+import pandas as pd
+
+df = pd.read_csv("https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DA0321EN-SkillsNetwork/LargeData/m1_survey_data.csv")
+
+#Find how many duplicate rows exist in the dataframe.
+print(df.duplicated().sum())
+
+#Remove the duplicate rows from the dataframe.
+df.drop_duplicates(inplace=True)
+
+# Find the missing values for all columns.
+print(df.isnull())
+
+# Find out how many rows are missing in the column 'WorkLoc'
+print(df['WorkLoc'].isnull().sum())
+
+# Find the value counts for the column WorkLoc
+df['WorkLoc'].value_counts()
+# Impute (replace) all the empty rows in the column WorkLoc with the value that you have identified as majority.
+df['WorkLoc'].fillna('Office', inplace=True)
+
+# List out the various categories in the column 'CompFreq'
+print(df['CompFreq'].unique())
+
+# row['CompFreq']Create a new column named 'NormalizedAnnualCompensation'
+def nComp (row):
+    if row['CompFreq'] == 'Yearly':
+        return row['CompTotal']
+    if row['CompFreq'] == 'Monthly':
+        return 12*row['CompTotal']
+    if row['CompFreq'] == 'Weekly':
+        return 52*row['CompTotal']
+    return 0
+
+
+df['NormalizedAnnualCompensation'] = df.apply(lambda row: nComp(row), axis=1)
