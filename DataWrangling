@@ -1,4 +1,4 @@
-# uses csv file imported into pandas dataframe and cleans data as prompted
+# uses csv file imported into pandas dataframe and cleans data as prompted Capstone Week 2
 
 import pandas as pd
 
