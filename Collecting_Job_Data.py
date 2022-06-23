@@ -1,4 +1,4 @@
-# Requires Jobs_API to be running to work jobs api returns json files
+# Requires Jobs_API to be running to work jobs api returns json files IBM Capstone Week 1
 # uses api created by Jobs_API to create 2 excel files
 # for job posting using a list of locations and techonolgies
 
