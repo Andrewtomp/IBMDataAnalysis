@@ -1,0 +1,95 @@
+# Create various plots using pandas dataframes and sql Week4
+
+!wget https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBM-DA0321EN-SkillsNetwork/LargeData/m4_survey_data.sqlite
+
+import sqlite3
+conn = sqlite3.connect("m4_survey_data.sqlite") # open a database connection
+
+import pandas as pd
+import seaborn as sns
+
+# Plot a histogram of ConvertedComp
+QUERY = """
+SELECT ConvertedComp
+FROM master
+"""
+
+df = pd.read_sql_query(QUERY,conn)
+df.plot.hist()
+
+# Plot a box plot of Age.
+QUERY = """
+SELECT Age
+FROM master
+"""
+
+df = pd.read_sql_query(QUERY,conn)
+df.plot.box()
+
+# Create a scatter plot of Age and WorkWeekHrs.
+QUERY = """
+SELECT Age, WorkWeekHrs
+FROM master
+"""
+df = pd.read_sql_query(QUERY,conn)
+df.plot.scatter(x='Age', y='WorkWeekHrs')
+
+# Create a bubble plot of `WorkWeekHrs` and `CodeRevHrs`, use `Age` column as bubble size.
+
+QUERY = """
+SELECT Age, WorkWeekHrs, CodeRevHrs
+FROM master
+"""
+df = pd.read_sql_query(QUERY,conn)
+sns.scatterplot(data=df, x="WorkWeekHrs", y="CodeRevHrs", size="Age", legend=False, sizes=(20, 2000))
+
+
+# Create a pie chart of the top 5 databases that respondents wish to learn next year. Label the pie chart with database names. Display percentages of each database on the pie chart.
+
+QUERY = """
+SELECT *
+FROM DatabaseDesireNextYear
+"""
+
+df = pd.read_sql_query(QUERY,conn)
+topdb =df['DatabaseDesireNextYear'].value_counts().head(5)
+topdb.plot(kind='pie', autopct='%1.0f%%')
+
+# what rank is Python in LanguageDesireNextYear
+df2 = pd.read_sql_query("SELECT * FROM LanguageDesireNextYear",conn)
+df2['LanguageDesireNextYear'].value_counts()
+
+# how many currently work with SQL
+df3 = pd.read_sql_query("SELECT * FROM DatabaseWorkedWith",conn)
+df3['DatabaseWorkedWith'].value_counts()
+
+# Create a stacked chart of median WorkWeekHrs and CodeRevHrs for the age group 30 to 35.
+QUERY = """
+SELECT WorkWeekHrs, CodeRevHrs, Age
+FROM master
+WHERE Age BETWEEN 30 and 35
+Group by Age
+"""
+df = pd.read_sql_query(QUERY,conn)
+df.plot.bar(x='Age')
+
+# Plot the median ConvertedComp for all ages from 45 to 60.
+QUERY = """
+SELECT ConvertedComp, Age
+FROM master
+WHERE Age BETWEEN 45 and 60
+Group by Age
+"""
+df = pd.read_sql_query(QUERY,conn)
+df.plot.line(x='Age')
+
+
+# Create a horizontal bar chart using column MainBranch.
+QUERY = """
+SELECT MainBranch
+FROM master
+"""
+df = pd.read_sql_query(QUERY,conn).value_counts()
+df.plot.barh(x='MainBranch')
+
+conn.close()
